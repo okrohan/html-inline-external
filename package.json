@@ -1,0 +1,13 @@
+{
+  "name": "html-include-external-resources",
+  "version": "1.0.0",
+  "description": "Helps you include external resource and compiles into a Single HTML page.",
+  "main": "index.js",
+  "repository": "https://github.com/oknagisa/html-include-external-resources.git",
+  "author": "okNagisa",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "jsdom": "^16.4.0"
+  }
+}
