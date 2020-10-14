@@ -1,2 +1,2 @@
 # html-include-external-resources
-Helps you include external resource and compiles into a Single HTML page.
+Simple utility to inline external HTML resources linke Scrips/Links into single HTML file
