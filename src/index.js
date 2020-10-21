@@ -1,86 +1,55 @@
-import {readFileSync, writeFileSync} from 'fs'
-import jsdom from 'jsdom'
-import path from 'path';
-import imageToBase64 from 'image-to-base64'
-
-const {JSDOM} = jsdom
-
-const DEFAULT_TAGS_TO_RESOLVE = ['script', 'link', 'img']
-let srcDir = ''
-let document
-
-const resolvePath = (src) => {
-    return path.resolve(process.cwd(), src.trim())
-}
-const resolveDirPath = (src) => (srcDir + '/' + src)
-
-const getFileString = (src) => {
-    return readFileSync(resolvePath(src)).toString()
-}
 
 
-const resolveExternalScript = ({element}) => {
-    if(!element.getAttribute('src')) return
-    const src = element.getAttribute('src')
-    const file = getFileString(resolvePath(resolveDirPath(src)))
-    console.log('Updating', src)
-    element.innerHTML = file
-    element.removeAttribute('src')
-}
+/* eslint-disable no-console */
+import yargs from 'yargs';
+import { hideBin } from 'yargs/helpers';
+import htmlInlineExternal from './html-inline-resources.mjs';
 
-const resolveExternalLink = ({element}) => {
-    const rel = element.getAttribute('rel')
-    const href = element.getAttribute('href')
-    const parentElement = element.parentElement
+const { argv } = yargs(hideBin(process.argv));
 
-    if(!rel || !href) return
+const ARGUMENTS = {
+  SRC: 'src',
+  DEST: 'dest',
+  PRETTY: 'pretty',
+  TAGS: 'tags',
+};
+const DEFAULT_TAGS_TO_RESOLVE = 'script,link,img';
 
-    switch(rel) {
-        case 'stylesheet':
-            console.log('Updating', href)
-            const file = getFileString(resolveDirPath(href))
-            const style = document.createElement('style')
-            style.innerHTML = file
-            parentElement.appendChild(style)
-            break;
+const getWarning = (shouldWarn) => (warning) => shouldWarn && console.warn(`[Warning] ${warning}`);
+const getLogger = (shouldLog) => (log) => shouldLog && console.log(`[Log] ${log}`);
 
-    }
-}
+const validate = () => {
+  const warning = getWarning(argv[ARGUMENTS.DEST]);
+  const logger = getLogger(argv[ARGUMENTS.DEST]);
 
-const resolveImageToBase64 = async({element}) => {
-    const src = element.getAttribute('src')
-    if(!src) return
-    console.log('----->', resolveDirPath(src))
-    const base64String = await imageToBase64(src)
-    element.setAttribute ('src',`data:image;base64, ${base64String}`)
-    console.log('Done With IMG')
+  if (!argv[ARGUMENTS.SRC] || typeof argv[ARGUMENTS.SRC] !== 'string') {
+    console.error('[Error] Missing --src argument, Please pass path to source file.');
+    process.exit(1);
+  }
+
+  if (!argv[ARGUMENTS.TAGS]) { logger(`Tags not passed, [${DEFAULT_TAGS_TO_RESOLVE}]  would be processed.`); }
+
+  if (typeof argv[ARGUMENTS.TAGS] === 'boolean') {
+    warning(`Invalid tags passed, Fallback : [${DEFAULT_TAGS_TO_RESOLVE}]  would be processed.`);
+  }
+};
+
+async function main() {
+  const {
+    src, dest, tags = DEFAULT_TAGS_TO_RESOLVE, pretty,
+  } = argv;
+  console.log({
+    src, dest, pretty, tags: tags.trim().split(','),
+  })
+  validate();
+  try {
+    await htmlInlineExternal({
+      src, dest, pretty, tags: tags.trim().split(','),
+    });
+    getLogger(dest)('Completed, Written into '+dest)
+  } catch (error) {
+    console.error('[Error]: Unexpected Error', error);
+  }
 }
 
-const resolveElement = async (element, tagName) => {
-    console.log('Resolving Tag', tagName)
-    switch(tagName){
-        case 'script':
-            resolveExternalScript({element})
-            break;
-        case 'link':
-            resolveExternalLink({element})
-            break;
-        case 'img':
-            await resolveImageToBase64({element})
-            break
-    }
-    
-}
-
-async function htmlIncludeExternalResources({src='./index.html', dest = './compiled.html', tagsToResolve = DEFAULT_TAGS_TO_RESOLVE} = {}, resolveRemote = false){
-    document = (new JSDOM(getFileString(src))).window.document;
-    
-    srcDir = path.dirname(src)
-    await tagsToResolve.forEach(async tagName =>
-        await Array.from(document.getElementsByTagName(tagName)).forEach(async(element) => await resolveElement(element, tagName))
-    )
-    writeFileSync(resolvePath(dest), document.querySelector( 'html' ).outerHTML)
-}
-
-await htmlIncludeExternalResources()
-console.log('Done!')
+main();
