@@ -1,7 +1,6 @@
 import { readFileSync, writeFileSync } from 'fs';
 import jsdom from 'jsdom';
 import path from 'path';
-import imageToBase64 from 'image-to-base64';
 
 let srcDir = '';
 let document;
@@ -11,13 +10,23 @@ const resolvePath = (src) => path.resolve(process.cwd(), src.trim());
 
 const resolveDirPath = (src) => (`${srcDir}/${src}`);
 
-const getFileString = (src) => readFileSync(resolvePath(src)).toString();
+const getFileSync = (src) => readFileSync(resolvePath(src))
+
+const getFileString = (src) => getFileSync(src).toString();
+
+const base64Map = {
+  svg: 'image/svg+xml',
+  png: 'image/png',
+  jpg: 'image/jpeg',
+  jpeg: 'image/jpeg',
+  gif: 'image/jpeg'
+}
 
 const resolveImageToBase64 = async ({ element, srcAttributeName = 'src' }) => {
   const src = element.getAttribute(srcAttributeName);
   if (!src || src.startsWith('http')) return;
-  const base64String = await imageToBase64(resolveDirPath(src))
-  element.setAttribute(srcAttributeName, `data:image;base64, ${base64String}`);
+  const base64String = getFileSync(resolveDirPath(src)).toString('base64')
+  element.setAttribute(srcAttributeName, `data:${base64Map[path.extname(src).slice(1)] || 'image'};base64, ${base64String}`);
 };
 
 const resolveExternalScript = ({ element }) => {
