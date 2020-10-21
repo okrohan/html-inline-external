@@ -1,6 +1,8 @@
 {
   "name": "html-include-external-resources",
-  "bin": "./src/index.js",
+  "bin": {
+    "html-include-external-resources": "./bin/cli.js"
+  },
   "version": "1.0.0",
   "description": "Helps you include external resource and compiles into a Single HTML page.",
   "main": "index.js",
