@@ -1,6 +1,12 @@
 # html-include-external-resources
 Simple utility to inline external HTML resources from `<script> <links />  <img />` into single HTML file.
 
+### Features
+- Full Control over output configuration, Print to console 💻, Write to file 📁 or simply Copy to clipboard 📋 .
+- Converts and inlines <img /> 🖼 source into base64 string🤓.
+- Configurable html tags to be processed 🛠.
+
+
 ### Usage
 ``` npx html-inline-external --src ./index.html >> ./compiled.html```
 
