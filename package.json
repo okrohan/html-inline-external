@@ -1,7 +1,7 @@
 {
   "name": "html-include-external-resources",
   "bin": {
-    "html-include-external-resources": "./bin/cli.js"
+    "html-include-external-resources": "./bin/cli.mjs"
   },
   "version": "1.0.0",
   "description": "Helps you include external resource and compiles into a Single HTML page.",
@@ -12,9 +12,11 @@
   "private": false,
   "type": "module",
   "scripts": {
-    "lint": "eslint src/*.js --fix"
+    "lint": "eslint **/*.mjs **/*.js --fix"
   },
   "dependencies": {
+    "clipboardy": "^2.3.0",
+    "html-minifier": "^4.0.0",
     "jsdom": "^16.4.0",
     "pretty": "^2.0.0",
     "yargs": "^16.1.0"
