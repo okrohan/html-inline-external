@@ -1,7 +1,7 @@
 {
   "name": "html-inline-external",
   "bin": {
-    "html-inline-external": "./bin/cli.mjs"
+    "html-inline-external": "./bin/cli.js"
   },
   "version": "1.0.0",
   "description": "Helps include/inline external Script/CSS/Images and compiles into a Single HTML page.",

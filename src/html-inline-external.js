@@ -2,9 +2,8 @@ import { readFileSync, writeFileSync } from 'fs';
 import jsdom from 'jsdom';
 import path from 'path';
 import clipboardy from 'clipboardy';
-import  htmlMinifier from 'html-minifier'
-import prettify from 'pretty'
-
+import htmlMinifier from 'html-minifier';
+import prettify from 'pretty';
 
 let srcDir = '';
 let document;
@@ -80,24 +79,29 @@ const resolveElement = (element, tagName) => {
 };
 
 const htmlInlineExternal = ({
-  src, dest, tags, copy = false, pretty = false,
+  src, dest, tags, copy = false, pretty = false, minify = false,
 } = {}) => {
   const dom = new JSDOM(getFileString(src));
   document = dom.window.document;
   srcDir = path.dirname(src);
 
-  tags.forEach(async (tagName) => {
+  tags.forEach(async (tag) => {
+    const tagName = tag.trim();
     const arr = Array.from(document.getElementsByTagName(tagName));
     arr.forEach(async (element) => resolveElement(element, tagName));
   });
 
   let resolvedDOM = dom.serialize();
   if (pretty) resolvedDOM = prettify(resolvedDOM);
-  else resolvedDOM = htmlMinifier.minify(resolvedDOM, {collapseWhitespace : true, minifyCSS: true, minifyJS: true});
+  else if (minify) {
+    resolvedDOM = htmlMinifier.minify(resolvedDOM,
+      { collapseWhitespace: true, minifyCSS: true, minifyJS: true });
+  }
+
   if (copy) {
     try {
       clipboardy.writeSync(resolvedDOM);
-      console.log('[Log]: Copied to clipboard.')
+      console.log('[Log]: Copied to clipboard.');
     } catch (e) {
       console.warn('[Error]: Failed to write into clipboard.');
       writeToFile(resolvePath('compiled.html'), resolvedDOM);

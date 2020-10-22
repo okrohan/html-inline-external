@@ -2,7 +2,8 @@
 /* eslint-disable no-console */
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
-import htmlInlineExternal from '../src/html-inline-external.mjs';
+import htmlInlineExternal from '../src/html-inline-external.js';
+
 
 const { argv } = yargs(hideBin(process.argv));
 
@@ -10,8 +11,9 @@ const ARGUMENTS = {
   SRC: 'src',
   DEST: 'dest',
   PRETTY: 'pretty',
+  MINIFY: 'minify',
   TAGS: 'tags',
-  COPY: 'copy'
+  COPY: 'copy',
 };
 const DEFAULT_TAGS_TO_RESOLVE = 'script,link,img';
 
@@ -31,16 +33,16 @@ const validate = () => {
 
 async function main() {
   const {
-    src, dest, tags = DEFAULT_TAGS_TO_RESOLVE, pretty, copy
+    src, dest, tags = DEFAULT_TAGS_TO_RESOLVE, pretty, copy, minify,
   } = argv;
   validate();
   try {
     await htmlInlineExternal({
-      src, dest, pretty, tags: tags.trim().split(','), copy
+      src, dest, pretty, tags: tags.trim().split(','), copy, minify,
     });
   } catch (error) {
     console.error('[Error]: Unexpected Error', error);
   }
 }
 
-await main();
+main();
