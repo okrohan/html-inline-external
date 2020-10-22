@@ -8,7 +8,9 @@ Simple utility to inline external HTML resources from `<script> <links />  <img 
 
 
 ### Usage
-``` npx html-inline-external --src index.html >> output.html ```
+``` 
+npx html-inline-external --src index.html >> output.html 
+```
 
 
 ### Input:
@@ -80,25 +82,40 @@ body {
 #### Write output to file:
 Uses node fs and writes the output into the given file path
 
-``` > npx html-inline-external --src ./index.html --dest ./output.html ```
-``` > [Log] Wrote to file output.html. ```
+``` 
+> npx html-inline-external --src ./index.html --dest ./output.html 
+```
+```
+> [Log] Wrote to file output.html. 
+```
 
 #### Copy processed output to clipboard:
 Copies the processed output to clipboard, Could be accessed by simply hitting `Ctrl/Cmd + V`
 
-``` > npx html-inline-external --src ./index.html --copy ```
-``` > [Log]: Copied to clipboard. ```
+``` 
+> npx html-inline-external --src ./index.html --copy 
+```
+``` 
+> [Log]: Copied to clipboard. 
+```
 
 #### Prettify processed output:
 Prettifies the processed output
 
-``` > npx html-inline-external --src ./index.html --pretty --dest ./output.html ```
-``` > [Log] Wrote to file output.html ```
+``` 
+> npx html-inline-external --src ./index.html --pretty --dest ./output.html 
+```
+```
+> [Log] Wrote to file output.html 
+```
 
 #### Minfy processed output:
 Minifies the processed output to remove whitespaces
 
-``` > npx html-inline-external --src ./index.html --minify --dest ./output.html ```
-``` > [Log] Wrote to file output.html ```
+```
+> npx html-inline-external --src ./index.html --minify --dest ./output.html 
+```
+```
+> [Log] Wrote to file output.html 
+```
 
----
