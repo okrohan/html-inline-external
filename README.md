@@ -1,5 +1,5 @@
 # html-include-external-resources
-Simple utility to inline external HTML resources like `script, links, img` into single HTML file
+Simple utility to inline external HTML resources from `<script> <links />  <img />` into single HTML file.
 
 ### Usage
 ``` npx html-inline-external --src ./index.html >> ./compiled.html```
@@ -61,7 +61,7 @@ body {
 | --- | --- | --- |
 | src | N/A | Path to the source file |
 | dest | N/A | Path to the destination file |
-| tags | `script,link,img` | List HTML Tags to be processed in csv format |
+| tags | `script, link, img` | List HTML Tags to be processed in csv format |
 | copy | false | Copies the process output to clipboard |
 | pretty | false | Prettify output |
 | minify | false | Minify output |
