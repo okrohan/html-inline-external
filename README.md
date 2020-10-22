@@ -8,7 +8,7 @@ Simple utility to inline external HTML resources from `<script> <links />  <img 
 
 
 ### Usage
-``` npx html-inline-external --src ./index.html >> ./compiled.html```
+``` npx html-inline-external --src index.html >> compiled.html```
 
 
 ### Input:
