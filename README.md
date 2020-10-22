@@ -1,5 +1,5 @@
 # html-include-external-resources
-Simple utility to inline external HTML resources linke Scrips/Links into single HTML file
+Simple utility to inline external HTML resources like `script, links, img` into single HTML file
 
 ### Usage
 ``` npx html-inline-external --src ./index.html >> ./compiled.html```
