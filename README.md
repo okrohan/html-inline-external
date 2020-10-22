@@ -4,6 +4,7 @@ Simple utility to inline external HTML resources linke Scrips/Links into single 
 ### Usage
 ``` npx html-inline-external --src ./index.html >> ./compiled.html```
 
+
 ### Input:
 **index.html**
 ```
@@ -53,6 +54,7 @@ body {
   </body>
 </html>
 ```
+---
 
 ### Options : 
 | Option | Default | Desscription |
@@ -64,6 +66,7 @@ body {
 | pretty | false | Prettify output |
 | minify | false | Minify output |
 
+---
 
 ### Examples : 
 #### Write output to file:
@@ -86,3 +89,4 @@ Minifies the processed output to remove whitespaces
 ```> npx html-inline-external --src ./index.html --minify --dest ./compiled.html```
 ```> [Log] Wrote to file compiled.html```
 
+---
