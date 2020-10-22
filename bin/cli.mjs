@@ -2,9 +2,7 @@
 /* eslint-disable no-console */
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
-import htmlInlineExternal from '../src/html-inline-resources.mjs';
-
-console.log('Mooo');
+import htmlInlineExternal from '../src/html-inline-external.mjs';
 
 const { argv } = yargs(hideBin(process.argv));
 
@@ -35,9 +33,6 @@ async function main() {
   const {
     src, dest, tags = DEFAULT_TAGS_TO_RESOLVE, pretty, copy
   } = argv;
-  console.log({
-    src, dest, pretty, tags: tags.trim().split(','),
-  });
   validate();
   try {
     await htmlInlineExternal({

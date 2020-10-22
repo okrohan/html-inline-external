@@ -1,12 +1,12 @@
 {
-  "name": "html-include-external-resources",
+  "name": "html-inline-external",
   "bin": {
-    "html-include-external-resources": "./bin/cli.mjs"
+    "html-inline-external": "./bin/cli.mjs"
   },
   "version": "1.0.0",
-  "description": "Helps you include external resource and compiles into a Single HTML page.",
-  "main": "index.js",
-  "repository": "https://github.com/oknagisa/html-include-external-resources.git",
+  "description": "Helps include/inline external Script/CSS/Images and compiles into a Single HTML page.",
+  "main": "src/html-inline-external.mjs",
+  "repository": "https://github.com/oknagisa/html-inline-external.git",
   "author": "okNagisa",
   "license": "MIT",
   "private": false,
@@ -25,5 +25,16 @@
     "eslint": "^7.11.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.22.1"
-  }
+  },
+  "keywords": [
+    "html-inline-external",
+    "html-inline",
+    "html-inclue-external",
+    "inline html files",
+    "include html files",
+    "include script in html",
+    "include css in html",
+    "inline script in html",
+    "inline css in html"
+  ]
 }

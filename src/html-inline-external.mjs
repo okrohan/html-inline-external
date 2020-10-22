@@ -3,6 +3,7 @@ import jsdom from 'jsdom';
 import path from 'path';
 import clipboardy from 'clipboardy';
 import  htmlMinifier from 'html-minifier'
+import prettify from 'pretty'
 
 
 let srcDir = '';
@@ -91,7 +92,7 @@ const htmlInlineExternal = ({
   });
 
   let resolvedDOM = dom.serialize();
-  if (pretty) resolvedDOM = pretty(resolvedDOM);
+  if (pretty) resolvedDOM = prettify(resolvedDOM);
   else resolvedDOM = htmlMinifier.minify(resolvedDOM, {collapseWhitespace : true, minifyCSS: true, minifyJS: true});
   if (copy) {
     try {
