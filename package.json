@@ -3,7 +3,7 @@
   "bin": {
     "html-inline-external": "./bin/cli.js"
   },
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Helps include/inline external Script/CSS/Images and compiles into a Single HTML page.",
   "main": "src/html-inline-external.mjs",
   "repository": "https://github.com/oknagisa/html-inline-external.git",
