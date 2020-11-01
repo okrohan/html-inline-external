@@ -1,6 +1,8 @@
 # html-include-external-resources
 Simple utility to inline external HTML resources from `<script> <links />  <img />` into single HTML file.
 
+![npm](https://img.shields.io/npm/dt/html-inline-external?style=flat-square)
+
 ### Features
 - Full Control over output configuration, Print to console 💻, Write to file 📁 or simply Copy to clipboard 📋 .
 - Converts and inlines <img /> 🖼 source into base64 string🤓.
