@@ -1,7 +1,7 @@
 # html-include-external-resources
 Simple utility to inline external HTML resources from `<script> <links />  <img />` into single HTML file.
 
-![npm](https://img.shields.io/npm/dt/html-inline-external?style=flat-square)
+![npm](https://img.shields.io/npm/dt/html-inline-external?style=flat-square) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
 ### Features
 - Full Control over output configuration, Print to console 💻, Write to file 📁 or simply Copy to clipboard 📋 .
