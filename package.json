@@ -10,9 +10,9 @@
   "author": "okNagisa",
   "license": "MIT",
   "private": false,
-  "type": "module",
   "scripts": {
-    "lint": "eslint **/*.mjs **/*.js --fix"
+    "lint": "eslint **/*.js --fix",
+    "minify": "minify ./src/html-inline-external.js ./src/cli.js --out-dir ./lib --mangle"
   },
   "dependencies": {
     "clipboardy": "^2.3.0",
@@ -22,6 +22,7 @@
     "yargs": "^16.1.0"
   },
   "devDependencies": {
+    "babel-minify": "^0.5.1",
     "eslint": "^7.11.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.22.1"

@@ -1,26 +1,23 @@
-import { readFileSync, writeFileSync } from 'fs';
-import jsdom from 'jsdom';
-import path from 'path';
-import clipboardy from 'clipboardy';
-import htmlMinifier from 'html-minifier';
-import prettify from 'pretty';
+const { promises: fsPromises } = require('fs');
+const jsdom = require('jsdom');
+const path = require('path');
+const htmlMinifier = require('html-minifier');
+const prettify = require('pretty');
+
+const { readFile } = fsPromises;
+const { JSDOM } = jsdom;
 
 let srcDir = '';
 let document;
-const { JSDOM } = jsdom;
 
 const resolvePath = (src) => path.resolve(process.cwd(), src.trim());
 
 const resolveDirPath = (src) => (`${srcDir}/${src}`);
 
-const getFileSync = (src) => readFileSync(resolvePath(src));
+const getFile = (src) => readFile(resolvePath(src));
 
-const getFileString = (src) => getFileSync(src).toString();
-
-const writeToFile = (dest, text) => {
-  console.log(`[Log] Wrote to file ${dest}`);
-  writeFileSync(dest, text);
-};
+const getFileString = (src, format) => getFile(src)
+  .then((buffer) => Promise.resolve(buffer.toString(format)));
 
 const base64Map = {
   svg: 'image/svg+xml',
@@ -30,84 +27,86 @@ const base64Map = {
   gif: 'image/jpeg',
 };
 
-const resolveImageToBase64 = async ({ element, srcAttributeName = 'src' }) => {
+const resolveImageToBase64 = ({ element, srcAttributeName = 'src' }) => {
   const src = element.getAttribute(srcAttributeName);
-  if (!src || src.startsWith('http')) return;
-  const base64String = getFileSync(resolveDirPath(src)).toString('base64');
-  element.setAttribute(srcAttributeName, `data:${base64Map[path.extname(src).slice(1)] || 'image'};base64, ${base64String}`);
+  if (!src || src.startsWith('http')) return Promise.resolve();
+  return getFileString(resolveDirPath(src, 'base64')).then((base64String) => {
+    element.setAttribute(srcAttributeName, `data:${base64Map[path.extname(src).slice(1)] || 'image'};base64, ${base64String}`);
+  });
 };
 
 const resolveExternalScript = ({ element }) => {
-  if (!element.getAttribute('src')) return;
-  const src = element.getAttribute('src');
-  const file = getFileString(resolvePath(resolveDirPath(src)));
-  // eslint-disable-next-line
-  element.innerHTML = file;
-  element.removeAttribute('src');
+  if (!element.getAttribute('src')) return Promise.resolve();
+
+  return getFileString(resolveDirPath(element.getAttribute('src'))).then((file) => {
+    element.innerHTML = file;
+    element.removeAttribute('src');
+  });
 };
 
 const resolveExternalIcon = async ({ element }) => {
-  if (!element.getAttribute('href')) return;
-  resolveImageToBase64({ element, srcAttributeName: 'href' });
+  if (!element.getAttribute('href')) return Promise.resolve();
+  return resolveImageToBase64({ element, srcAttributeName: 'href' });
 };
 
 const resolveExternalStyleSheet = ({ element }) => {
   const href = element.getAttribute('href');
   const { parentElement } = element;
 
-  if (!href) return;
-  const file = getFileString(resolveDirPath(href));
-  const style = document.createElement('style');
-  style.innerHTML = file;
-  parentElement.appendChild(style);
+  if (!href) return Promise.resolve();
+
+  return getFileString(resolveDirPath(href)).then((file) => {
+    const style = document.createElement('style');
+    style.innerHTML = file;
+    parentElement.replaceChild(style, element);
+  });
+};
+
+const resolveExternalLink = ({ element }) => {
+  switch (element.getAttribute('rel')) {
+    case 'stylesheet':
+      return resolveExternalStyleSheet({ element });
+
+    case 'icon':
+      return resolveExternalIcon({ element });
+    default:
+      return Promise.resolve();
+  }
 };
 
 const resolveElement = (element, tagName) => {
   switch (tagName) {
     case 'script':
-      resolveExternalScript({ element });
-      break;
+      return resolveExternalScript({ element });
     case 'link':
-      if (element.getAttribute('rel') === 'stylesheet') resolveExternalStyleSheet({ element });
-      else if (element.getAttribute('rel') === 'icon') resolveExternalIcon({ element });
-      break;
+      return resolveExternalLink({ element });
     case 'img':
-      resolveImageToBase64({ element });
-      break;
+      return resolveImageToBase64({ element });
     default:
+      return Promise.resolve();
   }
 };
+
+const resolveTag = (tagName) => Promise.all(
+  Array.from(document.getElementsByTagName(tagName.trim()))
+    .map((element) => resolveElement(element, tagName)),
+);
 
 const htmlInlineExternal = ({
-  src, dest, tags, copy = false, pretty = false, minify = false,
-} = {}) => {
-  const dom = new JSDOM(getFileString(src));
+  src, tags = ['script', 'link', 'img'], pretty, minify,
+}) => getFileString(src).then((fileString) => {
+  const dom = new JSDOM(fileString);
   document = dom.window.document;
   srcDir = path.dirname(src);
-
-  tags.forEach(async (tag) => {
-    const tagName = tag.trim();
-    const arr = Array.from(document.getElementsByTagName(tagName));
-    arr.forEach(async (element) => resolveElement(element, tagName));
-  });
-
-  let resolvedDOM = dom.serialize();
-  if (pretty) resolvedDOM = prettify(resolvedDOM);
-  else if (minify) {
-    resolvedDOM = htmlMinifier.minify(resolvedDOM,
-      { collapseWhitespace: true, minifyCSS: true, minifyJS: true });
-  }
-
-  if (copy) {
-    try {
-      clipboardy.writeSync(resolvedDOM);
-      console.log('[Log]: Copied to clipboard.');
-    } catch (e) {
-      console.warn('[Error]: Failed to write into clipboard.');
-      writeToFile(resolvePath('compiled.html'), resolvedDOM);
+  return Promise.all(tags.map((tag) => resolveTag(tag))).then(() => {
+    let resolvedDOM = dom.serialize();
+    if (pretty) resolvedDOM = prettify(resolvedDOM);
+    else if (minify) {
+      resolvedDOM = htmlMinifier.minify(resolvedDOM,
+        { collapseWhitespace: true, minifyCSS: true, minifyJS: true });
     }
-  } else if (dest) writeToFile(resolvePath(dest), resolvedDOM);
-  else console.log(resolvedDOM);
-};
+    return Promise.resolve(resolvedDOM);
+  });
+});
 
-export default htmlInlineExternal;
+module.exports =  htmlInlineExternal;
