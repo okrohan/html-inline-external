@@ -9,8 +9,16 @@ Simple utility to inline external HTML resources from `<script> <links />  <img 
 - Configurable html tags to be processed 🛠.
 - Node API
 
+| Contents |
+| --- |
+| [CLI Usage](https://github.com/oknagisa/html-inline-external/blob/master/README.md#npx-cli-usage) |
+| [Node API Usage](https://github.com/oknagisa/html-inline-external/blob/master/README.md#node-api-usage) |
+| [Recipies](https://github.com/oknagisa/html-inline-external/blob/master/README.md#recipies-) |
 
-### Npx CLI Usage
+
+---
+
+### CLI Usage
 ``` 
 npx html-inline-external --src index.html >> output.html 
 ```
@@ -81,6 +89,40 @@ body {
 
 ---
 
+### Node API Usage
+- Install html-inline-external using your package manager
+```
+npm install html-inline-external --save 
+```
+OR
+```
+yarn add html-inline-external
+```
+
+- Use it in your NodeJS file
+```
+htmlInlineExternal({options})
+```
+- Example
+```
+const htmlInlineExternal = require('html-inline-external')
+
+htmlInlineExternal({src: './test/index.html'}).then(output => console.log(output))
+
+```
+
+
+### API Options : 
+| Option | Default | Desscription |
+| --- | --- | --- |
+| src | N/A | Path to the source file |
+| tags | `script, link, img` | List HTML Tags to be processed in csv format |
+| pretty | false | Prettify output |
+| minify | false | Minify output |
+
+
+---
+
 ### Recipies : 
 #### Write output to file:
 Uses node fs and writes the output into the given file path
@@ -121,35 +163,3 @@ Minifies the processed output to remove whitespaces
 ```
 > [Log] Wrote to file output.html 
 ```
-
-### Node API Usage
-- Install html-inline-external using your package manager
-```
-npm install html-inline-external --save 
-```
-OR
-```
-yarn add html-inline-external
-```
-
-- Use it in your NodeJS file
-```
-htmlInlineExternal({options})
-```
-- Example
-```
-const htmlInlineExternal = require('html-inline-external')
-
-htmlInlineExternal({src: './test/index.html'}).then(output => console.log(output))
-
-```
-
-
-### API Options : 
-| Option | Default | Desscription |
-| --- | --- | --- |
-| src | N/A | Path to the source file |
-| tags | `script, link, img` | List HTML Tags to be processed in csv format |
-| pretty | false | Prettify output |
-| minify | false | Minify output |
-
