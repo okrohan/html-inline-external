@@ -11,7 +11,7 @@ Simple utility to inline external HTML resources from `<script> <links />  <img 
 
 | Contents |
 | --- |
-| [CLI Usage](https://github.com/oknagisa/html-inline-external/blob/master/README.md#npx-cli-usage) |
+| [CLI Usage](https://github.com/oknagisa/html-inline-external/blob/master/README.md#cli-usage) |
 | [Node API Usage](https://github.com/oknagisa/html-inline-external/blob/master/README.md#node-api-usage) |
 | [Recipies](https://github.com/oknagisa/html-inline-external/blob/master/README.md#recipies-) |
 
