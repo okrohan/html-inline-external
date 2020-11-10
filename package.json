@@ -1,10 +1,9 @@
 {
   "name": "html-inline-external",
   "bin": {
-    "html-inline-external": "./bin/cli.js"
+    "html-inline-external": "./lib/cli.js"
   },
   "files": [
-    "./bin/*",
     "./lib/*"
   ],
   "version": "1.0.4",
