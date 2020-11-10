@@ -6,7 +6,7 @@
   "files": [
     "./lib/*"
   ],
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Helps include/inline external Script/CSS/Images and compiles into a Single HTML page.",
   "main": "lib/html-inline-external.js",
   "repository": "https://github.com/oknagisa/html-inline-external.git",
