@@ -4,7 +4,7 @@
     "html-inline-external": "./lib/cli.js"
   },
   "files": [
-    "./lib/*"
+    "lib/**"
   ],
   "version": "1.0.5",
   "description": "Helps include/inline external Script/CSS/Images and compiles into a Single HTML page.",
