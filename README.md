@@ -13,7 +13,7 @@ Simple utility to inline external HTML resources from `<script> <links />  <img 
 | --- |
 | [CLI Usage](https://github.com/oknagisa/html-inline-external/blob/master/README.md#cli-usage) |
 | [Node API Usage](https://github.com/oknagisa/html-inline-external/blob/master/README.md#node-api-usage) |
-| [Recipies](https://github.com/oknagisa/html-inline-external/blob/master/README.md#recipies-) |
+| [Recipies](https://github.com/oknagisa/html-inline-external/blob/master/README.md#recipies) |
 
 
 ---
@@ -123,7 +123,7 @@ htmlInlineExternal({src: './test/index.html'}).then(output => console.log(output
 
 ---
 
-### Recipies : 
+### Recipies
 #### Write output to file:
 Uses node fs and writes the output into the given file path
 
