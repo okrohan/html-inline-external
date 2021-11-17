@@ -30,7 +30,7 @@ const base64Map = {
 const resolveImageToBase64 = ({ element, srcAttributeName = 'src' }) => {
   const src = element.getAttribute(srcAttributeName);
   if (!src || src.startsWith('http')) return Promise.resolve();
-  return getFileString(resolveDirPath(src, 'base64')).then((base64String) => {
+  return getFileString(resolveDirPath(src), 'base64').then((base64String) => {
     element.setAttribute(srcAttributeName, `data:${base64Map[path.extname(src).slice(1)] || 'image'};base64, ${base64String}`);
   });
 };
@@ -109,4 +109,4 @@ const htmlInlineExternal = ({
   });
 });
 
-module.exports =  htmlInlineExternal;
+module.exports = htmlInlineExternal;
