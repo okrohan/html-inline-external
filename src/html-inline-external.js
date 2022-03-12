@@ -75,6 +75,9 @@ const resolveExternalLink = ({ element }) => {
 };
 
 const resolveElement = (element, tagName) => {
+  if (element.getAttribute("inline") == "false") {
+    return Promise.resolve();
+  }
   switch (tagName) {
     case 'script':
       return resolveExternalScript({ element });
