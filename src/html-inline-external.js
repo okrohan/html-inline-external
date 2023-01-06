@@ -27,6 +27,14 @@ const base64Map = {
   gif: 'image/jpeg',
 };
 
+const ignoreSourceStartingWith = [
+  'http://',
+  'https://',
+];
+
+const containsIgnoreSourceStartingWith = (src) => ignoreSourceStartingWith
+  .some((ignoreString) => src.startsWith(ignoreString));
+
 const resolveImageToBase64 = ({ element, srcAttributeName = 'src' }) => {
   const src = element.getAttribute(srcAttributeName);
   if (!src || src.startsWith('http')) return Promise.resolve();
@@ -37,7 +45,7 @@ const resolveImageToBase64 = ({ element, srcAttributeName = 'src' }) => {
 
 const resolveExternalScript = ({ element }) => {
   if (!element.getAttribute('src')) return Promise.resolve();
-
+  if (containsIgnoreSourceStartingWith(element.getAttribute('src'))) return Promise.resolve();
   return getFileString(resolveDirPath(element.getAttribute('src'))).then((file) => {
     element.innerHTML = file;
     element.removeAttribute('src');
@@ -46,6 +54,7 @@ const resolveExternalScript = ({ element }) => {
 
 const resolveExternalIcon = async ({ element }) => {
   if (!element.getAttribute('href')) return Promise.resolve();
+  if (containsIgnoreSourceStartingWith(element.getAttribute('href'))) return Promise.resolve();
   return resolveImageToBase64({ element, srcAttributeName: 'href' });
 };
 
@@ -54,6 +63,7 @@ const resolveExternalStyleSheet = ({ element }) => {
   const { parentElement } = element;
 
   if (!href) return Promise.resolve();
+  if (containsIgnoreSourceStartingWith(element.getAttribute('href'))) return Promise.resolve();
 
   return getFileString(resolveDirPath(href)).then((file) => {
     const style = document.createElement('style');

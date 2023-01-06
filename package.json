@@ -6,7 +6,7 @@
   "files": [
     "lib/**"
   ],
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Helps include/inline external Script/CSS/Images and compiles into a Single HTML page.",
   "main": "lib/html-inline-external.js",
   "repository": "https://github.com/okrohan/html-inline-external.git",
@@ -14,7 +14,7 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "lint": "eslint **/*.js --fix",
+    "lint": "eslint src/*.js --fix",
     "minify": "minify ./src/html-inline-external.js ./src/cli.js --out-dir ./lib --mangle"
   },
   "dependencies": {
