@@ -15,7 +15,10 @@
   "private": false,
   "scripts": {
     "lint": "eslint src/*.js --fix",
-    "minify": "minify ./src/html-inline-external.js ./src/cli.js --out-dir ./lib --mangle"
+    "minify": "minify ./src/html-inline-external.js ./src/cli.js --out-dir ./lib --mangle",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
   },
   "dependencies": {
     "clipboardy": "^2.3.0",
@@ -28,7 +31,8 @@
     "babel-minify": "^0.5.1",
     "eslint": "^7.11.0",
     "eslint-config-airbnb-base": "^14.2.0",
-    "eslint-plugin-import": "^2.22.1"
+    "eslint-plugin-import": "^2.22.1",
+    "jest": "^29.7.0"
   },
   "keywords": [
     "html-inline-external",
